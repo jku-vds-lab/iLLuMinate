@@ -1,0 +1,3 @@
+from .style import register_style_click_callback
+from .topic import register_topic_click_callback
+from .format import register_format_click_callback
