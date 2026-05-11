@@ -33,7 +33,7 @@ pip install -r requirements.txt
 ```
 
 ## OpenAI API Key
-We use OpenAI models to general human readable annotations. Please replace the API key placeholder in `app/analysis/labeling/prompting.py`
+We use OpenAI models to generate human-readable annotations. Please replace the API key placeholder in `app/analysis/labeling/prompting.py`
 
 ```python
 client = OpenAI(api_key="sk-XXXXXXXXXXXXXXXX")
