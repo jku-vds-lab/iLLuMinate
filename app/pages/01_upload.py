@@ -65,7 +65,7 @@ def layout():
                                     },
                                     children=[
                                         dmc.Image(
-                                            src="/assets/parrot2.png",
+                                            src="/assets/parrot.png",
                                             alt="Illustration",
                                             fit="contain",
                                             style={
@@ -159,14 +159,15 @@ def handle_upload(contents, filename):
 
     preview = df.head(10)
 
+    preview_subset = preview.reindex(columns=["comp_key", "response"], fill_value="")
     table = dmc.Table(
         striped=True,
         highlightOnHover=True,
         withTableBorder=True,
         withColumnBorders=True,
         data={
-            "head": ["prompt_key", "response"],
-            "body": [[row["prompt_key"], str(row["response"])[:200]] for _, row in preview.iterrows()],
+            "head": ["comp_key", "response"],
+            "body": preview_subset.values.tolist(),
         },
     )
 

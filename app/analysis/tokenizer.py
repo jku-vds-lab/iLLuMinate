@@ -18,13 +18,13 @@ def tokenize_data(data, drop_short=True, min_len=5, drop_duplicates=False):
                 continue
 
             if drop_duplicates:
-                key = (record['prompt_key'], response_idx, sentence.strip())
+                key = (record['comp_key'], response_idx, sentence.strip())
                 if key in seen:
                     continue
                 seen.add(key)
 
             records.append({
-                "prompt_key": record['prompt_key'],
+                "comp_key": record['comp_key'],
                 "response_idx": response_idx,
                 "sentence_idx": sentence_idx,
                 "sentence": sentence.strip(),

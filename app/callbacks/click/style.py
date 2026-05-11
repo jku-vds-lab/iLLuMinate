@@ -80,7 +80,7 @@ def get_evidence_snippets(
         if len(sentence.split()) > 5
     ]
 
-    feature_matrix = features_df.drop(columns=["prompt_key"]).set_index("response_idx").T
+    feature_matrix = features_df.drop(columns=["comp_key"]).set_index("response_idx").T
 
     sent_scores = score_windows_for_factor(
         main_sents,

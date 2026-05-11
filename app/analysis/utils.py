@@ -17,14 +17,14 @@ def postprocess_heatmap_matrix(matrix, per_prompt=False, row_meta=None):
     if per_prompt:
         matrix = (
             matrix.T
-                .groupby(level="prompt_key", sort=False)
+                .groupby(level="comp_key", sort=False)
                 .mean()
                 .T
         )
         col_meta = None
     else:
         col_meta = pd.DataFrame({
-            "prompt_key": [c[0] for c in matrix.columns],
+            "comp_key": [c[0] for c in matrix.columns],
             "response_idx": [c[1] for c in matrix.columns],
         })
 
@@ -34,7 +34,7 @@ def postprocess_heatmap_matrix(matrix, per_prompt=False, row_meta=None):
 
         ordered_cols = []
 
-        for prompt_key, meta_sub in col_meta.groupby("prompt_key", sort=False):
+        for comp_key, meta_sub in col_meta.groupby("comp_key", sort=False):
             cols = meta_sub.index.tolist()
             sub_order = cluster_order(matrix[cols].values.T)
             ordered_cols.extend([cols[i] for i in sub_order])

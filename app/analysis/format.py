@@ -67,7 +67,7 @@ def get_format_stats(data):
     all_stats = []
     for i, r in enumerate(data):
         stats = md_format_stats(r["response"])
-        stats["prompt_key"] = r["prompt_key"]
+        stats["comp_key"] = r["comp_key"]
         stats["response_idx"] = i
         all_stats.append(stats)
     format_df = pd.DataFrame.from_records(all_stats).fillna(0)
@@ -78,7 +78,7 @@ def compute_format_matrix(stats, per_prompt=False):
 
     f_cols = [
         c for c in norm_scores.columns
-        if c not in ("prompt_key", "response_idx")
+        if c not in ("comp_key", "response_idx")
     ]
 
     mins = norm_scores[f_cols].min()
@@ -87,7 +87,7 @@ def compute_format_matrix(stats, per_prompt=False):
 
     norm_scores[f_cols] = (norm_scores[f_cols] - mins).div(denom)
 
-    norm_scores = norm_scores.set_index(["prompt_key", "response_idx"]).T
+    norm_scores = norm_scores.set_index(["comp_key", "response_idx"]).T
 
     matrix, col_meta = postprocess_heatmap_matrix(
         norm_scores,

@@ -37,9 +37,9 @@ def topic_modeling_pipeline(data, with_labels=False, n_clusters=None):
 
 def compute_topic_matrix(data, per_prompt=False, labels=None):
     prob = (
-        data.groupby(["topic", "prompt_key", "response_idx"], sort=False)["prob"]
+        data.groupby(["topic", "comp_key", "response_idx"], sort=False)["prob"]
             .max()
-            .unstack(["prompt_key", "response_idx"], sort=False)
+            .unstack(["comp_key", "response_idx"], sort=False)
             .fillna(0.0)
     )
 

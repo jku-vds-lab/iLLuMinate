@@ -8,7 +8,7 @@ from .labeling import label_factors
 from app.analysis.utils import get_root_path, postprocess_heatmap_matrix
 
 def get_style_features(data):
-    prompts = [r['prompt_key'] for r in data]
+    prompts = [r['comp_key'] for r in data]
     df = pl.DataFrame([{
             "doc_id": str(i),
             "text": record['response']
@@ -20,7 +20,7 @@ def get_style_features(data):
     features = pipeline.run(df)
     features = features.sort(pl.col("doc_id").cast(pl.Int64))
     features = features.with_columns(
-        pl.Series("prompt_key", prompts)
+        pl.Series("comp_key", prompts)
     )
     features = features.rename({"doc_id": "response_idx"})
 
@@ -121,7 +121,7 @@ def representative_snippets(
 def build_factor_features_map(masked, data, loadings, scores, features, n_factors=4):
     biber_features = pd.read_csv(f'{get_root_path().parent}/data/features.csv')
 
-    features_ = features.drop(columns=['prompt_key']).set_index('response_idx').T
+    features_ = features.drop(columns=['comp_key']).set_index('response_idx').T
     corpus_mean = features_.mean(axis=1)
     corpus_std = features_.std(axis=1, ddof=1)
     zero_var_cols = corpus_std[corpus_std < 1e-12].index.tolist()
@@ -211,7 +211,7 @@ def biber_analysis_pipeline(data, n_factors=4, with_labels=False):
 
     loadings = analyzer.mda_loadings.to_pandas()
     scores = analyzer.mda_dim_scores
-    scores = scores.rename({"doc_id": "response_idx", "doc_cat": "prompt_key"}).to_pandas()
+    scores = scores.rename({"doc_id": "response_idx", "doc_cat": "comp_key"}).to_pandas()
 
     saliency_mask = compute_saliency_mask(loadings)
     factors, feature_detail = build_factor_features_map(saliency_mask, data, loadings, scores, features.to_pandas(), n_factors=n_factors)
@@ -233,7 +233,7 @@ def compute_style_matrix(scores, bipolar=False, per_prompt=False, labels=None):
 
     norm_scores[f_cols] = 2 * scaled - 1 if bipolar else scaled
 
-    norm_scores = norm_scores.set_index(["prompt_key", "response_idx"]).T
+    norm_scores = norm_scores.set_index(["comp_key", "response_idx"]).T
 
     row_meta = None
 

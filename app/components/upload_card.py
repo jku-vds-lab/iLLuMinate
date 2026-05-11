@@ -23,7 +23,7 @@ def upload_card(upload_id: str, filename_id: str):
                         dash_iconify.DashIconify(icon="material-symbols:cloud-upload", color="#9ce5eb", width=30),
                         dmc.Button("Select CSV", variant="gradient"),
                         dmc.Text("Or drag & drop you CSV here", c="grey", fw=700),
-                        dmc.Text("Supports CSV with columns: prompt_key, response", c="dimmed"),
+                        dmc.Text("Supports CSV with columns: comp_key, response", c="dimmed"),
                     ],
                     align="center", gap=7, p=0
                 ),

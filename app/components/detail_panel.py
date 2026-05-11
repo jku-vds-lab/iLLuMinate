@@ -92,7 +92,7 @@ def style_detail_panel(
                 value="pos-info" if factor_dir == "pos" else "neg-info",
                 children=[
                     dmc.AccordionControl(
-                        "Positive Pole" if factor_dir == "pos" else "Negative Pole",
+                        "Communication Style Information",
                         style={"fontWeight": 600},
                     ),
                     dmc.AccordionPanel(factor_children),

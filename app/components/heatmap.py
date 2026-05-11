@@ -5,24 +5,25 @@ import plotly.express as px
 
 from app.enums import VariationMode, variation_mode_2_color
 
-def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=None, title=""):
-    x = np.arange(frac.shape[1])
-    y = frac.index.tolist()
+def build_heatmap_per_response(data, col_meta, mode: VariationMode, row_meta=None, title=""):
+    x = np.arange(data.shape[1])
+    y = data.index.tolist()
     y_labels = row_meta["label"].tolist() if row_meta is not None else y
 
-    prompts = col_meta["prompt_key"].astype(str).tolist()
+    print("col_meta:", col_meta)
+    prompts = col_meta["comp_key"].astype(str).tolist()
     uniq_prompts = list(dict.fromkeys(prompts))  # stable unique
     prompt_to_code = {p: i for i, p in enumerate(uniq_prompts)}
     codes = [prompt_to_code[p] for p in prompts]
 
-    col_ids = frac.columns.tolist()
+    col_ids = data.columns.tolist()
 
-    prompt_keys = col_meta.loc[col_ids, "prompt_key"].astype(str).tolist()
+    comp_keys = col_meta.loc[col_ids, "comp_key"].astype(str).tolist()
     response_idxs = col_meta.loc[col_ids, "response_idx"].tolist()
 
-    customdata = np.zeros((frac.shape[0], frac.shape[1], 3), dtype=object)
-    for j in range(frac.shape[1]):
-        customdata[:, j, 0] = prompt_keys[j]
+    customdata = np.zeros((data.shape[0], data.shape[1], 3), dtype=object)
+    for j in range(data.shape[1]):
+        customdata[:, j, 0] = comp_keys[j]
         customdata[:, j, 1] = response_idxs[j]
         customdata[:, j, 2] = col_ids[j]
 
@@ -36,12 +37,12 @@ def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=Non
             t = i / m
             colorscale.append((t, palette[i % len(palette)]))
 
-    total_height = 20 * frac.shape[0] + 100
+    total_height = 20 * data.shape[0] + 100
     min_small_px = 10
     small_ratio = min_small_px / total_height
     small_ratio = max(small_ratio, 0.01) 
 
-    total_height = 20 * frac.shape[0] + 100
+    total_height = 20 * data.shape[0] + 100
     min_vertical_spacing = 3
     small_ratio_s = min_vertical_spacing / total_height
     small_ratio_s = max(small_ratio_s, 0.005) 
@@ -57,7 +58,7 @@ def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=Non
         go.Heatmap(
             z=[codes],
             x=x,
-            y=["prompt_key"],
+            y=["comp_key"],
             colorscale=[[0, "gainsboro"], [1, "gainsboro"]],
             showscale=False,
             hovertemplate=None,
@@ -69,10 +70,10 @@ def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=Non
 
     fig.add_trace(
         go.Heatmap(
-            z=frac.values,
+            z=data.values,
             x=x,
             y=y_labels,
-            zmin=-1 if frac.values.min() < 0 else 0, zmax=1,
+            zmin=-1 if data.values.min() < 0 else 0, zmax=1,
             colorbar=dict(title=title),
             customdata=customdata,
             hovertemplate=None,
@@ -88,7 +89,7 @@ def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=Non
     fig.update_xaxes(
         tickmode="array",
         tickvals=x,
-        ticktext=frac.columns.tolist(),
+        ticktext=data.columns.tolist(),
         showticklabels=False,
         row=2, col=1
     )
@@ -124,7 +125,7 @@ def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=Non
         center = (s + e) / 2 
         fig.add_annotation(
             x=center,
-            y="prompt_key",
+            y="comp_key",
             xref="x",
             yref="y",
             text=str(label),
@@ -134,7 +135,7 @@ def build_heatmap_per_response(frac, col_meta, mode: VariationMode, row_meta=Non
         )
 
     fig.update_layout(
-        height=30 * frac.shape[0] + 100,
+        height=30 * data.shape[0] + 100,
         margin=dict(l=120, r=40, t=40, b=40),
         hovermode="x",
         hoverdistance=1,
