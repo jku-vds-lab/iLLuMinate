@@ -1,7 +1,7 @@
 # Visual Fingerprints for LLM Generation Comparison
 
 <p align="center">
-  <img src="app/assets/teaser.png" width="1000"/>
+  <img src="app/assets/screenshots.png" width="600"/>
 </p>
 
 <p align="justify">
@@ -30,6 +30,13 @@ python -m venv .venv
 source .venv/bin/activate
 
 pip install -r requirements.txt
+```
+
+## OpenAI API Key
+We use OpenAI models to general human readable annotations. Please replace the API key placeholder in `app/analysis/labeling/prompting.py`
+
+```python
+client = OpenAI(api_key="sk-XXXXXXXXXXXXXXXX")
 ```
 
 ## Starting the application
