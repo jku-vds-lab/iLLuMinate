@@ -45,3 +45,24 @@ client = OpenAI(api_key="sk-XXXXXXXXXXXXXXXX")
 python -m app.app
 ```
 
+## Paper
+
+This repository accompanies the paper:
+
+**Visual Fingerprints for LLM Generation Comparison**  
+Amal Alnouri, Andreas Hinterreiter, Christina Humer, Furui Cheng, and Marc Streit.  
+arXiv:2605.06054, 2026.  
+https://arxiv.org/abs/2605.06054
+
+## Citation
+
+```bibtex
+@misc{alnouri2026visualfingerprintsllmgeneration,
+  title={Visual Fingerprints for LLM Generation Comparison},
+  author={Alnouri, Amal and Hinterreiter, Andreas and Humer, Christina and Cheng, Furui and Streit, Marc},
+  year={2026},
+  eprint={2605.06054},
+  archivePrefix={arXiv},
+  primaryClass={cs.AI},
+  doi={10.48550/arXiv.2605.06054}
+}
