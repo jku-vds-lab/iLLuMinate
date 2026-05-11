@@ -12,9 +12,11 @@ Large language model (LLM) outputs arise from complex interactions among prompts
 
 ```
 .
-├── app/                # Dash-based application
-├── data/               # Input data
-├── requirements.txt    # Python dependencies
+├── app/                    # Dash-based application
+├── data/
+│   ├── scenarios/          # csv files with the LLM responses for the different usage scenarios
+│   ├── features.csv        # Descriptions of the grammatical features extracted by Biber's pipeline
+├── requirements.txt        # Python dependencies
 └── README.md
 ```
 
